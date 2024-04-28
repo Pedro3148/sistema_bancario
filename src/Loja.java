@@ -1,4 +1,3 @@
-import java.util.Random;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -25,25 +24,20 @@ public class Loja {
     public void comprar(Cliente cliente, Double valorCompra) {
         this.lock.lock();
         banco.transferir(cliente.getConta(), this.conta, valorCompra);
-        if (this.conta.getSaldo() >= this.salarioFuncionario) {
-            this.saldoDisponivelPagamento.signalAll();
-        }
         this.lock.unlock();
     }
 
-    public void pagarFuncionario(Conta contaFuncionario) {
+    public boolean pagarFuncionario(Conta contaFuncionario) {
         this.lock.lock();
-
-        while (this.conta.getSaldo() < this.salarioFuncionario) {
-            try {
-                this.saldoDisponivelPagamento.await();
-            } catch (InterruptedException e) {
-                System.out.println("Thread foi interrompida!");
+        try {
+            if (this.conta.getSaldo() >= this.salarioFuncionario) {
+                banco.transferir(this.conta, contaFuncionario, this.salarioFuncionario);
+                return true;
             }
+            return  false;
+        } finally {
+            this.lock.unlock();
         }
-
-        banco.transferir(this.conta, contaFuncionario, this.salarioFuncionario);
-        this.lock.unlock();
     }
 
     public Conta getConta() {
@@ -62,4 +56,5 @@ public class Loja {
     public Double getSalarioFuncionario() {
         return salarioFuncionario;
     }
+
 }
