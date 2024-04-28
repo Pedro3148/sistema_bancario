@@ -1,5 +1,5 @@
 public class Conta {
-    private String titular;
+    private final String titular;
     private Double saldo;
 
     Conta(String titular, Double saldoInicial) {
