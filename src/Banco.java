@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Banco {
-    private List<Conta> contas = new ArrayList<>();
+    private final List<Conta> contas = new ArrayList<>();
     private ReentrantLock lock = new ReentrantLock();
 
     public void adicionarConta(Conta conta) {
@@ -47,6 +47,5 @@ public class Banco {
         } finally {
             this.lock.unlock();
         }
-
     }
 }
