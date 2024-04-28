@@ -38,4 +38,5 @@ public class Cliente extends Thread{
     public Conta getConta() {
         return conta;
     }
+
 }
