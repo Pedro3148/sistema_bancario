@@ -19,9 +19,9 @@ public class Main {
     static public Funcionario[] criarFuncionario(List<Loja> lojas, Banco banco) {
         Funcionario[] funcionarios = new Funcionario[lojas.size()*2];
         int qtdFuncionario = 0;
-        for (int i = 0; i < lojas.size(); i++) {
-            funcionarios[qtdFuncionario] = new Funcionario("Funcionario #" + (++qtdFuncionario), lojas.get(i), banco);
-            funcionarios[qtdFuncionario] = new Funcionario("Funcionario #" + (++qtdFuncionario), lojas.get(i), banco);
+        for (Loja loja : lojas) {
+            funcionarios[qtdFuncionario] = new Funcionario("Funcionario #" + (++qtdFuncionario), loja, banco);
+            funcionarios[qtdFuncionario] = new Funcionario("Funcionario #" + (++qtdFuncionario), loja, banco);
         }
 
         return  funcionarios;
@@ -47,33 +47,41 @@ public class Main {
                 cliente.join();
             }
 
-            Thread.sleep(20000);
-
-            for (Funcionario funcionario : funcionarios) {
-                if (funcionario.isAlive()) {
-                    funcionario.mudarStatus();
+            for (Loja loja : lojas) {
+                Conta conta = loja.getConta();
+                while (conta.getSaldo() >= loja.getSalarioFuncionario()) {
+                    Thread.sleep(2000);
                 }
             }
+
+            for (Funcionario funcionario : funcionarios) {
+                funcionario.mudarStatus();
+                System.out.print(". ");
+                Thread.sleep(2000);
+            }
+            System.out.print("\n\n");
+
         } catch (InterruptedException e) {
             System.out.println("Main Thread interruped");
         }
 
         for (Cliente cliente : clientes) {
             Conta conta = cliente.getConta();
-            System.out.println(cliente.getName() + "Conta " +  ": " + conta.getSaldo());
+            System.out.println(cliente.getName() + " Conta " +  ": " + conta.getSaldo());
         }
+
 
         for (Loja loja: lojas) {
             Conta conta = loja.getConta();
-            System.out.println(loja.getNome() + "Conta " + ": " + conta.getSaldo());
+            System.out.println(loja.getNome() + " Conta " + ": " + conta.getSaldo());
         }
 
 
         for (Funcionario funcionario : funcionarios) {
             Conta contaSalario = funcionario.getContaSalario();
             Conta contaInvestimento = funcionario.getContaInvestimento();
-            System.out.println(funcionario.getName()  + "Conta Salario" + ": " + contaSalario.getSaldo());
-            System.out.println(funcionario.getName()  + "Conta Investimento" + ": " + contaInvestimento.getSaldo());
+            System.out.println(funcionario.getName()  + " Conta Salario" + ": " + contaSalario.getSaldo());
+            System.out.println(funcionario.getName()  + " Conta Investimento" + ": " + contaInvestimento.getSaldo());
         }
     }
 }
