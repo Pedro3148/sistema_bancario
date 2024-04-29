@@ -50,7 +50,7 @@ public class Main {
             for (Loja loja : lojas) {
                 Conta conta = loja.getConta();
                 while (conta.getSaldo() >= loja.getSalarioFuncionario()) {
-                    Thread.sleep(2000);
+                    Thread.sleep(5000);
                 }
             }
 
