@@ -32,7 +32,8 @@ public class Funcionario extends Thread{
                 System.out.println("Thread foi interrompida!");
             }
 
-            if (loja.pagarFuncionario(this.contaSalario)) {
+            loja.pagarFuncionario(this.contaSalario);
+            if (this.contaSalario.getSaldo() == 1400) {
                 Double valorParaInvestir = this.contaSalario.getSaldo() * 0.2;
                 investir(valorParaInvestir);
             }
