@@ -36,6 +36,7 @@ public class Funcionario extends Thread{
             if (this.contaSalario.getSaldo() == 1400) {
                 Double valorParaInvestir = this.contaSalario.getSaldo() * 0.2;
                 investir(valorParaInvestir);
+                break;
             }
         }
     }
